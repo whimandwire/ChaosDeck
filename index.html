@@ -374,7 +374,7 @@
       </label>
     </div>
     <div class="filters-note">
-      If no filters are selected, the full deck will be used. Shuffling rebuilds the deck using the current filters.
+      Unchecked categories are excluded from the deck. Shuffle resets the deck based on your current filter choices.
     </div>
   </div>
 
@@ -411,7 +411,6 @@
       { name: "Advice Shot", type: "modifier", categories: ["social"], text: `Ask any player of your choice what shot they would take here—and attempt that exact shot.` },
       { name: "Backwards Setup", type: "modifier", categories: ["movement"], text: `Stand facing away from the hole and twist your torso around to swing behind you.` },
       { name: "Bank It", type: "modifier", categories: ["mechanics"], text: `Your shot must bounce off something—a wall, rock, or rim—if possible.` },
-      { name: "Behind the Ball", type: "modifier", categories: ["movement"], text: `Stand directly behind your ball (as far back as you can) and swing from that awkward angle.` },
       { name: "Behind-the-Back", type: "modifier", categories: ["movement","mechanics"], text: `Swing with your controller behind your back.` },
       { name: "Billiard Shot", type: "modifier", categories: ["mechanics","movement"], text: `Get low like a pool player and poke the ball like a cue stick.` },
       { name: "Blue Shell", type: "modifier", categories: ["social"], text: `The player currently in last place chooses a modifier or direction that the player(s) in the lead must follow for this shot.` },
@@ -423,7 +422,7 @@
       { name: "Elbows Glued", type: "modifier", categories: ["movement"], text: `Pretend your elbows are stuck to your sides as you swing.` },
       { name: "Eyes Closed", type: "modifier", categories: ["mechanics"], text: `Line up your shot normally, then close your eyes for the swing.` },
       { name: "Eyes on the Hole", type: "modifier", categories: ["mechanics"], text: `Look toward the hole, not the ball, while swinging.` },
-      { name: "Fast Shot", type: "modifier", categories: ["mechanics"], text: `Don’t think, just putt! Approach the ball and swing immediately.` },
+      { name: "Fast Shot", type: "modifier", categories: ["mechanics"], text: `Don’t think—just putt! Approach the ball and swing immediately.` },
       { name: "Frozen Friends", type: "modifier", categories: ["social"], text: `All other players must freeze completely while you putt. If anyone moves, they must take their next shot opposite-handed.` },
       { name: "Full Golf Swing", type: "modifier", categories: ["movement"], text: `Perform an exaggerated, full-body golf swing. Channel your inner PGA legend.` },
       { name: "Granny Shot", type: "modifier", categories: ["movement","mechanics"], text: `Face the ball and swing with your controller between your legs.` },
@@ -459,22 +458,22 @@
       { name: "Whisper Shot", type: "modifier", categories: ["voice"], text: `Whisper dramatic commentary as you swing.` },
       { name: "Super Modifier — Chaos Reigns", type: "modifier", categories: ["super"], text: `For the next card only, the chaos modifier applies to every shot you take on that hole, not just the first.` },
       { name: "Super Modifier — Double Trouble", type: "modifier", categories: ["super"], text: `For the next hole only, draw two chaos cards instead of one. Apply the first to everyone’s first shot and the second to everyone’s second shot.` },
-      { name: "Super Modifier — Wild Reroll", type: "modifier", categories: ["super"], text: `For the next chaos card only, the group may choose to discard it and draw a new one—but only once. The second card must be used.` },
+      { name: "Super Modifier — Wild Reroll", type: "modifier", categories: ["super"], text: `Your group now has a single-use Reroll Token! At any later hole, you may vote (majority wins) to toss out the drawn card and pull a new one once. The redraw is final—the second card must be used.` },
       { name: "Wrist-Only", type: "modifier", categories: ["mechanics","movement"], text: `Lock your elbow and shoulder—swing using wrist motion only.` }
     ];
 
     const miniGames = [
       {
-        name: "Mini Game — Hide & Seek Break!",
+        name: "Mini Game — Hide & Seek!",
         type: "miniGame",
         categories: ["mini-game","social"],
-        text: `Before playing this hole, everyone turns off name tags. The player currently in first place (if tied, all leaders) hides somewhere on the course. The first player to find a hider chooses a modifier (or draws a random card) for that hider’s first shot on this hole. If this is hole 1, redraw this card and use it on hole 2 instead.`
+        text: `Before playing this hole, everyone turns off name tags. The player (or players, if tied) currently in first place hides somewhere on the course. The first player to find a hider chooses a modifier (or draws a random card) for that hider’s first shot on this hole. If this is hole 1, redraw this card and use it on hole 2 instead.`
       },
       {
         name: "Mini Game — Closest to the Hole",
         type: "miniGame",
         categories: ["mini-game","social"],
-        text: `On this hole, everyone plays their first shot as normal. The player whose ball ends closest to the cup on their first shot earns an immunity token. A hole-in-one wins automatically. If there is a tie or it is too close to call, all tied players earn a token.`
+        text: `On this hole, everyone plays their first shot as normal. The player whose ball ends closest to the cup on their first shot earns an immunity token. A hole-in-one wins automatically. If it is too close to call, all tied players earn a token.`
       },
       {
         name: "Mini Game — Blind Betting",
