@@ -521,15 +521,26 @@
       return active;
     }
 
+    function getInactiveCategories() {
+      const inputs = document.querySelectorAll('input[name="categoryFilter"]');
+      const inactive = [];
+      inputs.forEach(input => {
+        if (!input.checked) inactive.push(input.value);
+      });
+      return inactive;
+    }
+
+    // Updated logic: Remove cards with ANY inactive category, even if they have checked categories too.
     function buildDeck(showMessage = true) {
-      const activeCats = getActiveCategories();
+      const inactiveCats = getInactiveCategories();
       let source = [...fullCards];
 
-      if (activeCats.length > 0) {
+      if (inactiveCats.length > 0) {
         source = source.filter(card =>
-          card.categories.some(cat => activeCats.includes(cat))
+          card.categories.every(cat => !inactiveCats.includes(cat))
         );
       }
+      // If all boxes are checked or no boxes are unchecked, source is fullCards as before
 
       deck = [...source];
       shuffleArray(deck);
