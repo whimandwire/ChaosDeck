@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mini Golf Mayhem: Deck of Chaos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 1.25rem 1rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background:
+        radial-gradient(circle at 0% 0%, #ff9a62 0, transparent 45%),
+        radial-gradient(circle at 100% 0%, #9b5bff 0, transparent 45%),
+        radial-gradient(circle at 50% 100%, #32e6b7 0, transparent 50%),
+        linear-gradient(135deg, #130323, #05010a);
+      font-family: "Fredoka", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #fff7ff;
+    }
+
+    h1 {
+      font-family: "Chewy", system-ui, sans-serif;
+      font-size: 2.1rem;
+      margin: 0;
+      text-align: center;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #ffe66d;
+      text-shadow:
+        0 2px 0 #140518,
+        0 6px 14px rgba(0, 0, 0, 0.8);
+    }
+
+    .subtitle {
+      margin-top: 0.2rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-align: center;
+      opacity: 0.9;
+    }
+
+    .top-bar {
+      margin-top: 0.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.6rem;
+      font-size: 0.78rem;
+    }
+
+    .top-bar button {
+      padding: 0.4rem 1.1rem;
+      border-radius: 999px;
+      border: 0;
+      background: rgba(0, 0, 0, 0.3);
+      color: #fdf7ff;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.2);
+    }
+
+    .top-bar button:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.3);
+    }
+
+    .filters-panel {
+      margin-top: 0.6rem;
+      width: min(480px, 100%);
+      border-radius: 16px;
+      background: rgba(6, 0, 24, 0.88);
+      border: 1px solid rgba(255,255,255,0.16);
+      padding: 0.7rem 0.9rem 0.85rem;
+      display: none;
+      backdrop-filter: blur(12px);
+    }
+
+    .filters-panel.open {
+      display: block;
+    }
+
+    .filters-title {
+      font-size: 0.8rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 0.45rem;
+      opacity: 0.95;
+    }
+
+    .filter-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 0.8rem;
+      align-items: center;
+    }
+
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(10, 8, 40, 0.9);
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .filter-chip input {
+      width: 14px;
+      height: 14px;
+    }
+
+    .filters-note {
+      margin-top: 0.45rem;
+      font-size: 0.7rem;
+      opacity: 0.78;
+    }
+
+    .buttons {
+      margin-top: 0.9rem;
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button.main-btn {
+      padding: 0.7rem 1.7rem;
+      border-radius: 999px;
+      border: 0;
+      background: linear-gradient(135deg, #ffd166, #ff4b5c);
+      color: #311117;
+      font-family: "Fredoka", system-ui, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow:
+        0 8px 18px rgba(0,0,0,0.9),
+        0 0 10px rgba(255,255,255,0.25);
+    }
+
+    button.main-btn.secondary {
+      background: linear-gradient(135deg, #9ad0ff, #7f5dff);
+      color: #110821;
+    }
+
+    button.main-btn:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow:
+        0 5px 12px rgba(0,0,0,0.9),
+        0 0 6px rgba(255,255,255,0.15);
+    }
+
+    .card-area {
+      margin-top: 1.4rem;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      width: min(320px, 92vw);
+      aspect-ratio: 2.5 / 3.75;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 0 0, #ffe9b8 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, #ffc1d8 0, transparent 55%),
+        #fff7e5;
+      border: 3px solid #c0181b;
+      box-shadow:
+        0 12px 30px rgba(0,0,0,0.7),
+        0 0 0 2px rgba(0,0,0,0.45);
+      padding: 16px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transform-origin: center;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+      cursor: pointer;
+    }
+
+    .card.mini-game {
+      background:
+        radial-gradient(circle at 0 0, #f5d4ff 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, #d1e1ff 0, transparent 55%),
+        #fff0fb;
+      border-color: #7f1dff;
+    }
+
+    .card.super-modifier {
+      background:
+        radial-gradient(circle at 0 0, #ffe4df 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, #ffb3b3 0, transparent 55%),
+        #ffe0e0;
+      border-color: #ff1744;
+      box-shadow:
+        0 14px 32px rgba(0,0,0,0.75),
+        0 0 0 2px rgba(120,0,0,0.6);
+    }
+
+    .card.draw-anim {
+      animation: cardPop 0.28s cubic-bezier(0.2, 1.4, 0.3, 1);
+    }
+
+    @keyframes cardPop {
+      0% { transform: translateY(10px) scale(0.95); opacity: 0; }
+      70% { transform: translateY(-2px) scale(1.03); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .card-header {
+      text-align: center;
+    }
+
+    .card-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #b20d30;
+      opacity: 0.95;
+      margin-bottom: 0.3rem;
+    }
+
+    .card.mini-game .card-label {
+      color: #6f1ad1;
+    }
+
+    .card.super-modifier .card-label {
+      color: #b00020;
+    }
+
+    .card-title {
+      font-family: "Chewy", system-ui, sans-serif;
+      font-size: 1.4rem;
+      color: #b31317;
+      text-shadow: 0 2px 0 #ffe6b8;
+      padding: 0 0.4rem;
+    }
+
+    .card.mini-game .card-title {
+      color: #6f1ad1;
+      text-shadow: 0 2px 0 #f7e4ff;
+    }
+
+    .card.super-modifier .card-title {
+      color: #c00024;
+      text-shadow: 0 2px 0 #ffe0e0;
+    }
+
+    .card-divider {
+      height: 4px;
+      width: 70%;
+      background: linear-gradient(to right, #ffdc6e, #ff4b5c);
+      margin: 0.6rem auto 0.7rem;
+      border-radius: 99px;
+    }
+
+    .card.mini-game .card-divider {
+      background: linear-gradient(to right, #bf94ff, #ff7ad8);
+    }
+
+    .card.super-modifier .card-divider {
+      background: linear-gradient(to right, #ff8a80, #ff1744);
+    }
+
+    .card-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 4px;
+      max-height: 60%;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .card-text {
+      font-size: 1.02rem;
+      color: #4b2220;
+      line-height: 1.45;
+    }
+
+    .card.mini-game .card-text {
+      color: #4b2050;
+    }
+
+    .card.super-modifier .card-text {
+      color: #4b1014;
+    }
+
+    .card-footer {
+      margin-top: 0.45rem;
+      min-height: 0.5rem;
+    }
+
+    .status {
+      margin-top: 0.7rem;
+      font-size: 0.78rem;
+      opacity: 0.9;
+      text-align: center;
+      min-height: 1.3rem;
+    }
+
+    @media (max-width: 420px) {
+      .card-text {
+        font-size: 0.96rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Mini Golf Mayhem</h1>
+  <div class="subtitle">Deck of Chaos</div>
+
+  <div class="top-bar">
+    <button id="toggleFiltersBtn">Filters & Deck Options</button>
+  </div>
+
+  <div class="filters-panel" id="filtersPanel">
+    <div class="filters-title">Filter by chaos type</div>
+    <div class="filter-grid">
+      <label class="filter-chip">
+        <input type="checkbox" name="categoryFilter" value="movement" checked>
+        <span>Movement / Stance</span>
+      </label>
+      <label class="filter-chip">
+        <input type="checkbox" name="categoryFilter" value="mechanics" checked>
+        <span>Shot Mechanics</span>
+      </label>
+      <label class="filter-chip">
+        <input type="checkbox" name="categoryFilter" value="voice" checked>
+        <span>Voice / Performance</span>
+      </label>
+      <label class="filter-chip">
+        <input type="checkbox" name="categoryFilter" value="social" checked>
+        <span>Social</span>
+      </label>
+      <label class="filter-chip">
+        <input type="checkbox" name="categoryFilter" value="puppet" checked>
+        <span>Puppets</span>
+      </label>
+      <label class="filter-chip">
+        <input type="checkbox" name="categoryFilter" value="mini-game" checked>
+        <span>Mini Games</span>
+      </label>
+      <label class="filter-chip">
+        <input type="checkbox" name="categoryFilter" value="super" checked>
+        <span>Super Modifiers</span>
+      </label>
+    </div>
+    <div class="filters-note">
+      If no filters are selected, the full deck will be used. Shuffling rebuilds the deck using the current filters.
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button class="main-btn" id="drawButton">Draw Card</button>
+    <button class="main-btn secondary" id="shuffleButton">Shuffle Deck</button>
+  </div>
+
+  <div class="card-area">
+    <div class="card" id="card">
+      <div class="card-header">
+        <div class="card-label" id="cardTypeLabel">Shared Modifier</div>
+        <div class="card-title" id="cardTitle">Tap the card or “Draw Card”</div>
+        <div class="card-divider"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-text" id="cardText">
+          At the start of each hole, draw a card and apply the chaos to everyone’s first shot.
+          Mini game and super modifier cards add special rules when they appear.
+        </div>
+      </div>
+      <div class="card-footer"></div>
+    </div>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <script>
+    // ===== CARD DATA =====
+    // type: "modifier" or "miniGame"
+    // categories are used only for filters
+
+    const modifiers = [
+      { name: "Advice Shot", type: "modifier", categories: ["social"], text: `Ask any player of your choice what shot they would take here—and attempt that exact shot.` },
+      { name: "Backwards Setup", type: "modifier", categories: ["movement"], text: `Stand facing away from the hole and twist your torso around to swing behind you.` },
+      { name: "Bank It", type: "modifier", categories: ["mechanics"], text: `Your shot must bounce off something—a wall, rock, or rim—if possible.` },
+      { name: "Behind the Ball", type: "modifier", categories: ["movement"], text: `Stand directly behind your ball (as far back as the game allows) and swing from that awkward angle.` },
+      { name: "Behind-the-Back", type: "modifier", categories: ["movement","mechanics"], text: `Swing with your controller behind your back.` },
+      { name: "Billiard Shot", type: "modifier", categories: ["mechanics","movement"], text: `Get low like a pool player and poke the ball like a cue stick.` },
+      { name: "Blue Shell", type: "modifier", categories: ["social"], text: `The player currently in last place chooses a modifier or direction that the players in the lead must follow for this shot.` },
+      { name: "Bowling Roll", type: "modifier", categories: ["movement","mechanics"], text: `Crouch and swing low as if rolling a bowling ball.` },
+      { name: "Call Your Shot", type: "modifier", categories: ["voice"], text: `Before swinging, describe aloud exactly what you intend the ball to do.` },
+      { name: "Club Compass", type: "modifier", categories: ["social","mechanics"], text: `Rotate your club slowly until another player says “STOP!”—then swing without adjusting further.` },
+      { name: "Crowded Shot", type: "modifier", categories: ["social","movement"], text: `Other players may hover nearby and visually crowd your swing.` },
+      { name: "Echo Shot", type: "modifier", categories: ["mechanics","social"], text: `Attempt to recreate the shot taken by the player who went before you. If you are first, enjoy a normal shot.` },
+      { name: "Elbows Glued", type: "modifier", categories: ["movement"], text: `Pretend your elbows are stuck to your sides as you swing.` },
+      { name: "Eyes Closed", type: "modifier", categories: ["mechanics"], text: `Line up your shot normally, then close your eyes for the swing.` },
+      { name: "Eyes on the Hole", type: "modifier", categories: ["mechanics"], text: `Look toward the hole—not the ball—while swinging.` },
+      { name: "Fast Shot", type: "modifier", categories: ["mechanics"], text: `Don’t plan. Just approach the ball and swing immediately.` },
+      { name: "Frozen Friends", type: "modifier", categories: ["social"], text: `All other players must freeze completely while you putt. If anyone moves, they must take their next shot opposite-handed.` },
+      { name: "Full Golf Swing", type: "modifier", categories: ["movement"], text: `Perform an exaggerated, full-body golf swing. Channel your inner PGA legend.` },
+      { name: "Granny Shot", type: "modifier", categories: ["movement","mechanics"], text: `Swing with your controller between your legs.` },
+      { name: "Guided Shot", type: "modifier", categories: ["social","mechanics"], text: `Choose any player. They position themselves somewhere in the hole, and you must aim toward them.` },
+      { name: "Jetpack Shot", type: "modifier", categories: ["movement"], text: `Fly straight up and straight down once before swinging. No need to go high.` },
+      { name: "Left Edge Stance", type: "modifier", categories: ["movement"], text: `Stand as far left on the tee as the game allows.` },
+      { name: "Look Away", type: "modifier", categories: ["movement"], text: `Turn your head away from the ball while swinging.` },
+      { name: "Long Club", type: "modifier", categories: ["movement","mechanics"], text: `Raise or fly your avatar upward until your club becomes comically long—then swing.` },
+      { name: "Lucky Normal", type: "modifier", categories: ["mechanics"], text: `You get a totally normal shot. Enjoy the break.` },
+      { name: "Mix It Up", type: "modifier", categories: ["movement"], text: `If you’ve been standing, take this shot seated. If you’ve been seated, take this shot standing.` },
+      { name: "No Practice Swings", type: "modifier", categories: ["mechanics"], text: `Your first motion that touches the ball counts—no warm-ups.` },
+      { name: "No Wrist!", type: "modifier", categories: ["mechanics","movement"], text: `Lock your wrist. Use only arm rotation and body movement to swing.` },
+      { name: "One-Handed Swing", type: "modifier", categories: ["movement"], text: `Place one hand behind your back and swing with the other.` },
+      { name: "Opposite Hand", type: "modifier", categories: ["mechanics","movement"], text: `Swing using your non-dominant hand only.` },
+      { name: "Peanut Gallery", type: "modifier", categories: ["social","voice"], text: `All other players must loudly react the instant you hit the ball.` },
+      { name: "Player Commentary", type: "modifier", categories: ["social","voice"], text: `Choose another player. They must narrate your entire setup and swing like a sports announcer.` },
+      { name: "Puppet Coach", type: "modifier", categories: ["puppet","voice","social"], text: `Raise your puppet and give yourself an over-the-top pep talk before swinging.` },
+      { name: "Puppet Commentators", type: "modifier", categories: ["puppet","voice","social"], text: `All shots on this hole must be narrated using puppet commentary only.` },
+      { name: "Puppet Crowd", type: "modifier", categories: ["puppet","social"], text: `Players may react to shots using puppets only. No voices.` },
+      { name: "Puppet Distractions", type: "modifier", categories: ["puppet","social"], text: `Other players may use their puppets to distract you while you swing.` },
+      { name: "Quiet on Set!", type: "modifier", categories: ["voice","social"], text: `Complete silence until the ball stops rolling—then everyone reacts loudly at once.` },
+      { name: "Reposition", type: "modifier", categories: ["movement"], text: `Line up your ideal shot, then take one full step left or right before swinging.` },
+      { name: "Right Edge Stance", type: "modifier", categories: ["movement"], text: `Stand as far right on the tee as the game allows.` },
+      { name: "Ringmaster Rumble", type: "modifier", categories: ["voice"], text: `Announce your shot in an enthusiastic circus-style voice.` },
+      { name: "Robot Shot", type: "modifier", categories: ["movement","mechanics"], text: `Move only in straight lines and sharp angles while setting up and swinging.` },
+      { name: "Shot Dictator", type: "modifier", categories: ["social"], text: `The player who went before you dictates how you must line up or swing. If you’re first, the player with the highest score on the previous hole decides.` },
+      { name: "Silent Hole", type: "modifier", categories: ["voice","social"], text: `No one may speak for the entire hole. Mute if needed.` },
+      { name: "Skyline Shot", type: "modifier", categories: ["movement"], text: `Lift your club over your head and drop into the downswing from above.` },
+      { name: "Slow-Mo Swing", type: "modifier", categories: ["movement","mechanics"], text: `Swing entirely in dramatic slow motion.` },
+      { name: "Spin to Win", type: "modifier", categories: ["movement"], text: `Spin your avatar or your body once before taking your swing.` },
+      { name: "Talkative Shot", type: "modifier", categories: ["voice"], text: `You must talk nonstop while setting up and swinging. If you stop talking for more than a second, you must swing immediately.` },
+      { name: "Tiny Club", type: "modifier", categories: ["movement","mechanics"], text: `Lower your avatar (crouch, sit, or fly down) until your club becomes tiny—then swing.` },
+      { name: "Trick Shot", type: "modifier", categories: ["mechanics"], text: `Attempt a tricky, risky, or stylish shot—banks encouraged.` },
+      { name: "Wack-A-Doodle", type: "modifier", categories: ["mechanics"], text: `Hit the ball as hard as seems reasonable for the hole.` },
+      { name: "Whisper Shot", type: "modifier", categories: ["voice"], text: `Whisper dramatic commentary as you swing.` },
+      { name: "Super Modifier — Chaos Reigns", type: "modifier", categories: ["super"], text: `For the next card only, the chaos modifier applies to every shot you take on that hole, not just the first.` },
+      { name: "Super Modifier — Double Trouble", type: "modifier", categories: ["super"], text: `For the next hole only, draw two chaos cards instead of one. Apply the first to everyone’s first shot and the second to everyone’s second shot.` },
+      { name: "Super Modifier — Wild Reroll", type: "modifier", categories: ["super"], text: `For the next chaos card only, the group may choose to discard it and draw a new one—but only once. The second card must be used.` },
+      { name: "Wrist-Only", type: "modifier", categories: ["mechanics","movement"], text: `Lock your elbow and shoulder—swing using wrist motion only.` }
+    ];
+
+    const miniGames = [
+      {
+        name: "Mini Game — Hide & Seek Break!",
+        type: "miniGame",
+        categories: ["mini-game","social"],
+        text: `Before playing this hole, everyone turns off name tags. The player currently in first place (if tied, all leaders) hides somewhere on the course. The first player to find a hider chooses a modifier (or draws a random card) for that hider’s first shot on this hole. If this is hole 1, redraw this card and use it on hole 2 instead.`
+      },
+      {
+        name: "Mini Game — Closest to the Hole",
+        type: "miniGame",
+        categories: ["mini-game","social"],
+        text: `On this hole, everyone plays their first shot as normal. The player whose ball ends closest to the cup on their first shot earns an immunity token. A hole-in-one wins automatically. If there is a tie or it is too close to call, all tied players earn a token.`
+      },
+      {
+        name: "Mini Game — Blind Betting",
+        type: "miniGame",
+        categories: ["mini-game","social"],
+        text: `Before anyone takes a shot, each player predicts how many strokes they’ll need to reach the cup. After the hole is completed, anyone whose prediction matches their actual score earns an immunity token.`
+      },
+      {
+        name: "Mini Game — Trick Shot Contest",
+        type: "miniGame",
+        categories: ["mini-game","social"],
+        text: `Everyone attempts their most absurd or stylish trick shot for their first stroke on this hole. After all shots, the group votes for their favorite performance. Whoever wins (ties allowed) earns an immunity token.`
+      }
+    ];
+
+    // ===== DECK LOGIC =====
+    let fullCards = [...modifiers, ...miniGames];
+    let deck = [];
+    let discardPile = [];
+
+    const cardEl = document.getElementById("card");
+    const cardTypeLabel = document.getElementById("cardTypeLabel");
+    const cardTitleEl = document.getElementById("cardTitle");
+    const cardTextEl = document.getElementById("cardText");
+    const statusEl = document.getElementById("status");
+    const drawButton = document.getElementById("drawButton");
+    const shuffleButton = document.getElementById("shuffleButton");
+    const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
+    const filtersPanel = document.getElementById("filtersPanel");
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function getActiveCategories() {
+      const inputs = document.querySelectorAll('input[name="categoryFilter"]');
+      const active = [];
+      inputs.forEach(input => {
+        if (input.checked) active.push(input.value);
+      });
+      return active;
+    }
+
+    function buildDeck(showMessage = true) {
+      const activeCats = getActiveCategories();
+      let source = [...fullCards];
+
+      if (activeCats.length > 0) {
+        source = source.filter(card =>
+          card.categories.some(cat => activeCats.includes(cat))
+        );
+      }
+
+      deck = [...source];
+      shuffleArray(deck);
+      discardPile = [];
+
+      if (deck.length === 0) {
+        statusEl.textContent = "No cards match the current filters. Adjust filters to rebuild the deck.";
+      } else if (showMessage) {
+        updateStatus("Deck shuffled. Ready to draw.");
+      } else {
+        updateStatus();
+      }
+    }
+
+    function updateStatus(message = "") {
+      const remaining = deck.length;
+      const discarded = discardPile.length;
+      const info = `Cards remaining: ${remaining} • Discard pile: ${discarded}`;
+      statusEl.textContent = message ? `${message}  ${info}` : info;
+    }
+
+    function drawCard() {
+      if (deck.length === 0) {
+        updateStatus("The deck is empty. Tap Shuffle Deck to start a new cycle.");
+        return;
+      }
+
+      const card = deck.pop();
+      discardPile.push(card);
+      showCard(card);
+      updateStatus();
+    }
+
+    function showCard(card) {
+      cardEl.classList.remove("draw-anim", "mini-game", "super-modifier");
+      void cardEl.offsetWidth; // restart animation
+      cardEl.classList.add("draw-anim");
+
+      // Apply special styles
+      const isMiniGame = card.type === "miniGame";
+      const isSuper = card.name.startsWith("Super Modifier");
+
+      if (isMiniGame) {
+        cardEl.classList.add("mini-game");
+      } else if (isSuper) {
+        cardEl.classList.add("super-modifier");
+      }
+
+      if (isMiniGame) {
+        cardTypeLabel.textContent = "Mini Game";
+      } else if (isSuper) {
+        cardTypeLabel.textContent = "Super Modifier";
+      } else {
+        cardTypeLabel.textContent = "Shared Modifier";
+      }
+
+      cardTitleEl.textContent = card.name;
+      cardTextEl.textContent = card.text;
+    }
+
+    drawButton.addEventListener("click", drawCard);
+    shuffleButton.addEventListener("click", () => buildDeck());
+    cardEl.addEventListener("click", drawCard);
+
+    toggleFiltersBtn.addEventListener("click", () => {
+      filtersPanel.classList.toggle("open");
+    });
+
+    document.querySelectorAll('input[name="categoryFilter"]').forEach(input => {
+      input.addEventListener("change", () => {
+        buildDeck(false);
+      });
+    });
+
+    // init
+    buildDeck(false);
+    updateStatus("Deck shuffled. Ready to draw.");
+  </script>
+</body>
+</html>
