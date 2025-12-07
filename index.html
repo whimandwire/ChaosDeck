@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
 
+  <!-- GSAP for animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
   <style>
     :root {
       color-scheme: dark;
@@ -31,6 +34,7 @@
         linear-gradient(135deg, #130323, #05010a);
       font-family: "Fredoka", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: #fff7ff;
+      overflow: hidden; /* keep confetti in bounds */
     }
 
     h1 {
@@ -161,6 +165,8 @@
       box-shadow:
         0 8px 18px rgba(0,0,0,0.9),
         0 0 10px rgba(255,255,255,0.25);
+      position: relative;
+      overflow: hidden;
     }
 
     button.main-btn.secondary {
@@ -180,6 +186,7 @@
       width: 100%;
       display: flex;
       justify-content: center;
+      perspective: 1200px;
     }
 
     .card {
@@ -201,6 +208,15 @@
       transform-origin: center;
       transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease;
       cursor: pointer;
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow:
+        0 18px 36px rgba(0,0,0,0.85),
+        0 0 0 2px rgba(0,0,0,0.5);
     }
 
     .card.mini-game {
@@ -220,6 +236,28 @@
       box-shadow:
         0 14px 32px rgba(0,0,0,0.75),
         0 0 0 2px rgba(120,0,0,0.6);
+    }
+
+    /* Extra chaos glow for special cards */
+    .card.chaos-glow {
+      animation: chaosGlow 0.8s ease-in-out 0s 2 alternate;
+    }
+
+    @keyframes chaosGlow {
+      0% {
+        box-shadow:
+          0 14px 32px rgba(0,0,0,0.75),
+          0 0 12px rgba(255,255,255,0.5),
+          0 0 30px rgba(255, 64, 129, 0.6);
+        transform: translateY(-2px) scale(1.03) rotate(-1.5deg);
+      }
+      100% {
+        box-shadow:
+          0 10px 26px rgba(0,0,0,0.6),
+          0 0 14px rgba(144, 202, 249, 0.7),
+          0 0 36px rgba(103, 58, 183, 0.7);
+        transform: translateY(0) scale(1.01) rotate(1.5deg);
+      }
     }
 
     .card.draw-anim {
@@ -331,6 +369,16 @@
         font-size: 0.96rem;
       }
     }
+
+    /* Full-screen confetti canvas */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
   </style>
 </head>
 <body>
@@ -400,13 +448,13 @@
     </div>
   </div>
 
+  <!-- Confetti overlay -->
+  <canvas id="confettiCanvas"></canvas>
+
   <div class="status" id="status"></div>
 
   <script>
     // ===== CARD DATA =====
-    // type: "modifier" or "miniGame"
-    // categories are used only for filters
-
     const modifiers = [
       { name: "Advice Shot", type: "modifier", categories: ["social"], text: `Ask any player of your choice what shot they would take here—and attempt that exact shot.` },
       { name: "Backwards Setup", type: "modifier", categories: ["movement"], text: `Stand facing away from the hole and twist your torso around to swing behind you.` },
@@ -503,21 +551,21 @@
     const shuffleButton = document.getElementById("shuffleButton");
     const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
     const filtersPanel = document.getElementById("filtersPanel");
+    const confettiCanvas = document.getElementById("confettiCanvas");
+    const confettiCtx = confettiCanvas.getContext("2d");
+
+    function resizeConfettiCanvas() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+    resizeConfettiCanvas();
+    window.addEventListener("resize", resizeConfettiCanvas);
 
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
       }
-    }
-
-    function getActiveCategories() {
-      const inputs = document.querySelectorAll('input[name="categoryFilter"]');
-      const active = [];
-      inputs.forEach(input => {
-        if (input.checked) active.push(input.value);
-      });
-      return active;
     }
 
     function getInactiveCategories() {
@@ -529,7 +577,7 @@
       return inactive;
     }
 
-    // Updated logic: Remove cards with ANY inactive category, even if they have checked categories too.
+    // Remove cards with ANY inactive category, even if they have checked categories too.
     function buildDeck(showMessage = true) {
       const inactiveCats = getInactiveCategories();
       let source = [...fullCards];
@@ -539,7 +587,6 @@
           card.categories.every(cat => !inactiveCats.includes(cat))
         );
       }
-      // If all boxes are checked or no boxes are unchecked, source is fullCards as before
 
       deck = [...source];
       shuffleArray(deck);
@@ -573,12 +620,83 @@
       updateStatus();
     }
 
-    function showCard(card) {
-      cardEl.classList.remove("draw-anim", "mini-game", "super-modifier");
-      void cardEl.offsetWidth; // restart animation
-      cardEl.classList.add("draw-anim");
+    // Simple confetti system
+    let confettiParticles = [];
+    let confettiAnimating = false;
 
-      // Apply special styles
+    function launchConfetti() {
+      const count = 80;
+      const colors = ["#ffcc00", "#ff6ec7", "#00f5d4", "#9b5bff", "#ff9a62", "#ffffff"];
+
+      confettiParticles = [];
+      for (let i = 0; i < count; i++) {
+        confettiParticles.push({
+          x: Math.random() * confettiCanvas.width,
+          y: -10 - Math.random() * 40,
+          radius: 3 + Math.random() * 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vx: -2 + Math.random() * 4,
+          vy: 2 + Math.random() * 3,
+          rotation: Math.random() * Math.PI * 2,
+          vr: -0.2 + Math.random() * 0.4
+        });
+      }
+
+      if (!confettiAnimating) {
+        confettiAnimating = true;
+        const start = performance.now();
+        function frame(now) {
+          const elapsed = now - start;
+          confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+
+          confettiParticles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.05;
+            p.rotation += p.vr;
+
+            confettiCtx.save();
+            confettiCtx.translate(p.x, p.y);
+            confettiCtx.rotate(p.rotation);
+            confettiCtx.fillStyle = p.color;
+            confettiCtx.beginPath();
+            confettiCtx.ellipse(0, 0, p.radius, p.radius * 0.6, 0, 0, Math.PI * 2);
+            confettiCtx.fill();
+            confettiCtx.restore();
+          });
+
+          if (elapsed < 1500) {
+            requestAnimationFrame(frame);
+          } else {
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confettiAnimating = false;
+          }
+        }
+        requestAnimationFrame(frame);
+      }
+    }
+
+    function animateShuffle() {
+      if (!window.gsap) return;
+      gsap.fromTo(
+        cardEl,
+        { rotationZ: -3 },
+        {
+          rotationZ: 3,
+          duration: 0.08,
+          repeat: 5,
+          yoyo: true,
+          ease: "sine.inOut",
+          onComplete() {
+            gsap.to(cardEl, { rotationZ: 0, duration: 0.1 });
+          }
+        }
+      );
+    }
+
+    function applyCardStylesAndText(card) {
+      cardEl.classList.remove("mini-game", "super-modifier", "chaos-glow");
+
       const isMiniGame = card.type === "miniGame";
       const isSuper = card.name.startsWith("Super Modifier");
 
@@ -598,10 +716,50 @@
 
       cardTitleEl.textContent = card.name;
       cardTextEl.textContent = card.text;
+
+      // Extra chaos flair for mini games + supers
+      if (isMiniGame || isSuper) {
+        cardEl.classList.add("chaos-glow");
+        launchConfetti();
+      }
+    }
+
+    function showCard(card) {
+      // If GSAP is available, use flip animation
+      if (window.gsap) {
+        gsap.to(cardEl, {
+          duration: 0.2,
+          rotationY: 90,
+          ease: "power1.in",
+          onComplete() {
+            applyCardStylesAndText(card);
+            gsap.fromTo(
+              cardEl,
+              { rotationY: -90, scale: 0.96, opacity: 0.9 },
+              {
+                rotationY: 0,
+                scale: 1,
+                opacity: 1,
+                duration: 0.32,
+                ease: "back.out(1.6)"
+              }
+            );
+          }
+        });
+      } else {
+        // fallback to simple CSS animation
+        cardEl.classList.remove("draw-anim");
+        void cardEl.offsetWidth;
+        cardEl.classList.add("draw-anim");
+        applyCardStylesAndText(card);
+      }
     }
 
     drawButton.addEventListener("click", drawCard);
-    shuffleButton.addEventListener("click", () => buildDeck());
+    shuffleButton.addEventListener("click", () => {
+      animateShuffle();
+      buildDeck();
+    });
     cardEl.addEventListener("click", drawCard);
 
     toggleFiltersBtn.addEventListener("click", () => {
