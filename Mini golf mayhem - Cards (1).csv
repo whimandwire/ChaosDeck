@@ -1,0 +1,74 @@
+name,type,players,categories,text
+Bank It,modifier,"1, 2, 3+",mechanics,"Your shot must bounce off something—a wall, rock, or rim—<i>if possible.</i>"
+Eyes Closed,modifier,"1, 2, 3+",mechanics,"Line up your shot normally, then close your eyes for the swing."
+Eyes on the Hole,modifier,"1, 2, 3+",mechanics,"Look toward the hole, not the ball, while swinging."
+Fast Shot,modifier,"1, 2, 3+",mechanics,Don’t think—just putt! Approach the ball and swing <b>immediately.</b>
+No Practice Swings,modifier,"1, 2, 3+",mechanics,Make contact on your first swing—<b>no practice.</b>
+Trick Shot,modifier,"1, 2, 3+",mechanics,"Attempt a tricky, risky, or stylish shot."
+Wack-A-Doodle,modifier,"1, 2, 3+",mechanics,Hit the ball as hard as seems reasonable for the hole.
+Billiard Shot,modifier,"1, 2, 3+","mechanics, movement",Get low like a pool player and poke the ball like a cue stick.
+No Wrist!,modifier,"1, 2, 3+","mechanics, movement",Lock your wrist. <b>Use only arm rotation</b> and <b>body movement</b> to swing.
+Opposite Hand,modifier,"1, 2, 3+","mechanics, movement",Swing using your <b>non-dominant hand</b> only.
+Wrist-Only,modifier,"1, 2, 3+","mechanics, movement",Lock your elbow and shoulder—swing using wrist motion only.
+Mirror Shot,modifier,2,"mechanics, social",Try to take the shot you <i>think your opponent would take</i> in this situation.
+Echo Shot,modifier,3+,"mechanics, social","Attempt to recreate the shot taken by the player who went before you. If you are up first, enjoy a normal shot."
+Mini Game — Blind Betting,miniGame,1,mini-game,"Before you take a shot, predict how many strokes you'll need to reach the cup. After the hole is completed, if your prediction matches your actual score, you earn an immunity token."
+Mini Game — Blind Betting,miniGame,"2, 3+",mini-game,"Before anyone takes a shot, each player predicts how many strokes they’ll need to reach the cup. After the hole is completed, anyone whose prediction matches their actual score earns an immunity token."
+Mini Game — Closest to the Hole,miniGame,"2, 3+",mini-game,"On this hole, everyone plays their first shot as normal. The player whose ball ends closest to the cup earns an immunity token. A hole-in-one wins automatically. If it’s too close to call, all tied players earn a token."
+Mini Game — Hide & Seek!,miniGame,3+,mini-game,"Before playing this hole, everyone turns off name tags. The player (or players, if tied) currently in first place hides somewhere on the course. The first player to find a hider earns an immunity token. <i>Tip: mute while hiding unless you want to use your voice as a hint.</i>"
+Mini Game — Trick Shot Contest,miniGame,3+,mini-game,"Everyone attempts their most absurd or stylish trick shot for their first stroke on this hole. After all shots, the group votes for their favorite performance. Whoever wins (ties allowed) earns an immunity token."
+Mini Game — Trick Shot Contest,miniGame,"2, 1",mini-game,Attempt a trick shot for your first stroke on this hole. Anyone who successfully does what they aimed to do earns an immunity token.
+Mini Game — Prize Hole,miniGame,"2, 3+",mini-game,"The winner of the next hole earns an <b>immunity token.</b> If there’s a tie, all winners get a token."
+Mini Game — Line Art,miniGame,3+,mini-game,"The player currently in first place draws a simple picture in the air using their club. If multiple players are tied for first, all tied leaders draw (simultaneously or taking turns—your choice!). All other players guess. The first correct guess for each drawing earns an immunity token."
+Behind-the-Back,modifier,"1, 2, 3+",movement,Swing with your controller held behind your back.
+Elbows Glued,modifier,"1, 2, 3+",movement,Pretend your elbows are stuck to your sides as you swing.
+Look Away,modifier,"1, 2, 3+",movement,Turn your head away from the ball while swinging.
+One-Handed Swing,modifier,"1, 2, 3+",movement,Place one hand behind your back and swing with the other.
+Skyline Shot,modifier,"1, 2, 3+",movement,Lift your club over your head and drop into the downswing from above.
+Spin to Win,modifier,"1, 2, 3+",movement,Spin your avatar or your body in a full circle once before taking your swing.
+Bowling Roll,modifier,"1, 2, 3+","movement, mechanics","Crouch and swing your club on your side, as if rolling a bowling ball."
+Granny Shot,modifier,"1, 2, 3+","movement, mechanics",Face the ball and swing with your controller between your legs.
+Long Club,modifier,"1, 2, 3+","movement, mechanics",Raise or fly your avatar upward until your club becomes comically long—then swing.
+Robot Shot,modifier,"1, 2, 3+","movement, mechanics",<b>Move only in straight lines and sharp angles</b> while setting up and swinging.
+Slow-Mo Swing,modifier,"1, 2, 3+","movement, mechanics",Swing in <i>dramatic slow motion.</i> Add speed at the last moment as needed.
+Tiny Club,modifier,"1, 2, 3+","movement, mechanics","Lower your avatar (crouch, sit, or fly down) until your club becomes tiny—then swing."
+Blind Angle,modifier,"1, 2, 3+","movement, mechanics","Close your eyes and spin around at least three times (or rotate your avatar with your joystick). Stop wherever you end up, open your eyes, and—without moving your feet—take your shot."
+Mix It Up,modifier,"1, 2, 3+","movement, mechanics, stance","If you’ve been standing, take this shot seated. If you’ve been seated, take this shot standing."
+Full Golf Swing,modifier,"1, 2, 3+","movement, performance","Perform an exaggerated, full-body golf swing. Channel your inner PGA legend."
+Backwards Setup,modifier,"1, 2, 3+","movement, stance",Stand facing away from the hole and twist your torso around to swing behind you.
+Reposition,modifier,"1, 2, 3+","movement, stance","Line up your ideal shot, then take one full step left or right before swinging."
+Right Edge Stance,modifier,"1, 2, 3+","movement, stance",Stand as far right on the tee as possible.
+Puppet Distractions,modifier,"2, 3+","puppet, social",Other players may use their puppets to distract you while you swing.
+Puppet Coach,modifier,"2, 3+","puppet, social, voice","Using your hand puppet, give yourself a pep talk before swinging."
+Puppet Commentators,modifier,"2, 3+","puppet, social, voice","During this hole, players may react to and comment on shots using <b>hand puppets only.</b>"
+Advice Shot,modifier,3+,"social, mechanics",Ask any player of your choice what shot they would take here—and attempt that <i>exact</i> shot.
+Advice Shot,modifier,2,"social, mechanics",Ask the other player what shot they would take here—and attempt that <i>exact</i> shot.
+Blue Shell,modifier,3+,"social, mechanics",The player currently in last place chooses a modifier (or makes up their own) that the player(s) in the lead must follow for this shot. Everyone else plays normally.
+Club Compass,modifier,3+,"social, mechanics",Rotate your club back <i>slowly</i> until someone says <b>“STOP!”</b>—then swing forward <b>immediately</b> without adjusting.
+Club Compass,modifier,2,"social, mechanics",Rotate your club back <i>slowly</i> until the other player says <b>“STOP!”</b>—then swing forward <b>immediately</b> without adjusting.
+Crowded Shot,modifier,3+,"social, mechanics",Other players may hover nearby and visually crowd your swing.
+Distraction Shot,modifier,2,"social, mechanics",The other player may hover nearby and create distractions while you swing.
+Echo Shot,modifier,2,"social, mechanics","Attempt to recreate the shot taken by the other player. If you are up first, enjoy a normal shot."
+Guided Shot,modifier,3+,"social, mechanics","Choose a player. They position themselves somewhere around the hole, and you must aim toward them."
+Guided Shot,modifier,2,"social, mechanics","The other player positions themselves somewhere around the hole, and you must aim toward them."
+Shot Dictator,modifier,3+,"social, mechanics","The player who went before you dictates how you must line up or swing. If you’re first, the player with the highest (worst) score on the previous hole decides for you."
+Shot Dictator,modifier,2,"social, mechanics",The other player dictates how you must line up or swing.
+Frozen Friends,modifier,3+,"social, movement","All other players must freeze completely while you putt. If anyone moves, they must take their next shot opposite-handed."
+Frozen Friends,modifier,2,"social, movement","The other player must freeze completely while you putt. If they move, they must take their next shot opposite-handed."
+Peanut Gallery,modifier,3+,"social, voice",All other players must react—<b>loudly and honestly</b>—the instant you hit the ball.
+Player Commentary,modifier,3+,"social, voice",Choose another player. They must narrate your entire turn like a sports announcer.
+Left Edge Stance,modifier,"1, 2, 3+","stance, movement",Stand as far left on the tee as possible.
+Height Hijack,modifier,"2, 3+","stance, movement, social","Take your stance, then the other player(s) dictate your avatar height (taller or shorter). You must swing at that height."
+Super Modifier — Everyone for Themselves!,modifier,"2, 3+",super,"Every player draws a different chaos card for this hole. If anyone draws a special card (Mini Game or Super Modifier), they may skip it or save it for the next hole, then draw again."
+Super Modifier — Chaos Reigns,modifier,"1, 2, 3+",super,"<b>For the next card only,</b> the chaos modifier applies to <b>every shot</b> you take on that hole—not just the first."
+Super Modifier — Double Trouble,modifier,"2, 3+",super,"For the next hole only, draw <b>two</b> chaos cards instead of one—one for everyone’s first shot and another for the second."
+Super Modifier — Wild Reroll,modifier,"2, 3+",super,"Your group now has a single-use <b>Reroll Token</b>! At any later hole, you may vote (majority wins) to toss out the drawn card and pull a new one once. The redraw is final—the second card must be used."
+Super Modifier — Wild Reroll,modifier,1,super,"You now have a single-use <b>Reroll Token</b>! At any later hole, you can toss out the drawn card and pull a new one once. The redraw is final—the second card must be used."
+Call Your Shot,modifier,"2, 3+",voice,"Before swinging, describe aloud exactly what you intend the ball to do."
+Ringmaster Rumble,modifier,"2, 3+",voice,Dramatically introduce your shot in your best announcer voice.
+Talkative Shot,modifier,"2, 3+",voice,"You must talk nonstop while setting up and swinging. If you stop talking for more than a second, you must swing <b>immediately.</b>"
+Whisper Shot,modifier,"2, 3+","voice, performance",Whisper <i>dramatic commentary</i> as you swing.
+Quiet on Set!,modifier,"2, 3+","voice, social",Complete silence until the ball stops rolling—then everyone reacts <b>loudly</b> at once.
+Silent Hole,modifier,"2, 3+","voice, social",No one may speak for the entire hole. Non-verbal communication is fine. <i>Mute if needed!</i>
+Lucky Normal,modifier,"1, 2, 3+",,You get a totally normal shot. <i>Enjoy the break!</i>
+World Tour,modifier,"2, 3+","performance, voice","Each player chooses an accent different from their own and must speak in it for the entire hole. If you slip out of the chosen accent—into your normal voice or another accent—your next shot must be a blind swing (line up first, then close your eyes before swinging)."
