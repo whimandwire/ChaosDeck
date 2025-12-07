@@ -189,84 +189,236 @@
       perspective: 1200px;
     }
 
-    .card {
-      width: min(320px, 92vw);
-      aspect-ratio: 2.5 / 3.75;
-      border-radius: 18px;
-      background:
-        radial-gradient(circle at 0 0, #ffe9b8 0, transparent 55%),
-        radial-gradient(circle at 100% 100%, #ffc1d8 0, transparent 55%),
-        #fff7e5;
-      border: 3px solid #c0181b;
-      box-shadow:
-        0 12px 30px rgba(0,0,0,0.7),
-        0 0 0 2px rgba(0,0,0,0.45);
-      padding: 16px 14px 14px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transform-origin: center;
-      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease;
-      cursor: pointer;
-      backface-visibility: hidden;
-      transform-style: preserve-3d;
-    }
+/* ──────────────────────────────────────────────── */
+/* BASE MODIFIER CARD (light teal, dark readable text) */
+/* ──────────────────────────────────────────────── */
+.card {
+  position: relative;
+  width: min(320px, 92vw);
+  aspect-ratio: 2.5 / 3.75;
+  border-radius: 18px;
 
-    .card:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow:
-        0 18px 36px rgba(0,0,0,0.85),
-        0 0 0 2px rgba(0,0,0,0.5);
-    }
+  /* Lighter teal + gentle glow edges */
+  background:
+    radial-gradient(circle at 0 0, #ffffff 0, transparent 55%),
+    radial-gradient(circle at 100% 100%, #e3f6ff 0, transparent 55%),
+    #f4fbff;
 
+  border: 3px solid #0288d1; /* lighter, brighter teal border */
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.7),
+    0 0 0 2px rgba(0,0,0,0.45);
+
+  padding: 16px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transform-origin: center;
+  transition:
+    box-shadow 0.16s ease,
+    background 0.16s ease,
+    border-color 0.16s ease;
+
+  cursor: pointer;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+
+/* Hover lift effect */
+.card:hover {
+  box-shadow:
+    0 18px 36px rgba(0,0,0,0.85),
+    0 0 0 2px rgba(0,0,0,0.5);
+}
+
+/* ───────────────────────────────────────────── */
+/* TEXT STYLING FOR REGULAR (NON-SPECIAL) CARDS */
+/* ───────────────────────────────────────────── */
+
+.card-title {
+  font-family: "Chewy", system-ui, sans-serif;
+  font-size: 1.4rem;
+
+  color: #045b78;               /* deep teal for readability */
+  text-shadow: 0 2px 0 #bde7ff; /* soft highlight */
+
+  padding: 0 0.4rem;
+}
+
+.card-text {
+  font-size: 1.02rem;
+  color: #143544;               /* dark blue-teal body text */
+  line-height: 1.45;
+}
+
+    /* Mini game card styling: purple/pink with sparkles + shimmer */
     .card.mini-game {
       background:
-        radial-gradient(circle at 0 0, #f5d4ff 0, transparent 55%),
-        radial-gradient(circle at 100% 100%, #d1e1ff 0, transparent 55%),
-        #fff0fb;
-      border-color: #7f1dff;
+        radial-gradient(circle at 0 0, #f3c5ff 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, #c3c8ff 0, transparent 55%),
+        #4a265f;
+      border-color: #9b5bff;
     }
 
+    .card.mini-game .card-title {
+      color: #ffe6ff;
+      text-shadow: 0 2px 0 #6f1ad1;
+    }
+
+    .card.mini-game .card-text {
+      color: #fbe8ff;
+    }
+
+    /* Sparkle field */
+    .card.mini-game::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,0.9) 0, transparent 55%),
+        radial-gradient(circle, rgba(0,245,212,0.7) 0, transparent 60%),
+        radial-gradient(circle, rgba(155,91,255,0.6) 0, transparent 55%);
+      background-size: 18px 18px, 26px 26px, 22px 22px;
+      background-position: 10% 20%, 70% 40%, 30% 80%;
+      mix-blend-mode: screen;
+      opacity: 0.0;
+      pointer-events: none;
+      animation: miniSparkles 2.4s ease-in-out 0.1s infinite alternate;
+    }
+
+    @keyframes miniSparkles {
+      0% {
+        opacity: 0.15;
+        transform: translate3d(-2px, -2px, 0);
+      }
+      100% {
+        opacity: 0.4;
+        transform: translate3d(2px, 2px, 0);
+      }
+    }
+
+    /* Shimmer sweep */
+    .card.mini-game::after {
+      content: "";
+      position: absolute;
+      top: -40%;
+      left: -60%;
+      width: 220%;
+      height: 180%;
+      background: linear-gradient(
+        120deg,
+        rgba(255,255,255,0.0) 0%,
+        rgba(255,255,255,0.35) 45%,
+        rgba(255,255,255,0.0) 80%
+      );
+      opacity: 0;
+      transform: translateX(-40%);
+      pointer-events: none;
+      animation: miniShimmer 1.3s ease-out 0.18s 1 forwards;
+    }
+
+    @keyframes miniShimmer {
+      0% {
+        opacity: 0;
+        transform: translateX(-40%);
+      }
+      30% {
+        opacity: 0.9;
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(40%);
+      }
+    }
+
+    /* Super modifier cards: orange/red + foil + burst */
     .card.super-modifier {
       background:
-        radial-gradient(circle at 0 0, #ffe4df 0, transparent 55%),
-        radial-gradient(circle at 100% 100%, #ffb3b3 0, transparent 55%),
-        #ffe0e0;
-      border-color: #ff1744;
+        radial-gradient(circle at 0 0, #ffe0bf 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, #ff9a7b 0, transparent 55%),
+        #6b1a0e;
+      border-color: #ff7043;
       box-shadow:
-        0 14px 32px rgba(0,0,0,0.75),
+        0 16px 36px rgba(0,0,0,0.85),
         0 0 0 2px rgba(120,0,0,0.6);
     }
 
-    .card.chaos-glow {
-      animation: chaosGlow 0.8s ease-in-out 0s 2 alternate;
+    .card.super-modifier .card-title {
+      color: #fff3e0;
+      text-shadow: 0 2px 0 #bf360c;
     }
 
-    @keyframes chaosGlow {
+    .card.super-modifier .card-text {
+      color: #ffe8dc;
+    }
+
+    /* Burst behind super card */
+    .card.super-modifier::before {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background:
+        radial-gradient(circle, rgba(255,255,255,0.3) 0, transparent 55%),
+        radial-gradient(circle at 20% 20%, rgba(255,183,77,0.35) 0, transparent 55%),
+        radial-gradient(circle at 80% 80%, rgba(255,138,101,0.35) 0, transparent 55%);
+      opacity: 0.0;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      animation: superBurst 0.65s ease-out 0.1s 1 forwards;
+    }
+
+    @keyframes superBurst {
       0% {
-        box-shadow:
-          0 14px 32px rgba(0,0,0,0.75),
-          0 0 12px rgba(255,255,255,0.5),
-          0 0 30px rgba(255, 64, 129, 0.6);
-        transform: translateY(-2px) scale(1.03) rotate(-1.5deg);
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      40% {
+        opacity: 0.75;
+        transform: scale(1.03);
       }
       100% {
-        box-shadow:
-          0 10px 26px rgba(0,0,0,0.6),
-          0 0 14px rgba(144, 202, 249, 0.7),
-          0 0 36px rgba(103, 58, 183, 0.7);
-        transform: translateY(0) scale(1.01) rotate(1.5deg);
+        opacity: 0.1;
+        transform: scale(1.08);
       }
     }
 
-    .card.draw-anim {
-      animation: cardPop 0.28s cubic-bezier(0.2, 1.4, 0.3, 1);
+    /* Foil shimmer band */
+    .card.super-modifier::after {
+      content: "";
+      position: absolute;
+      top: -40%;
+      left: -70%;
+      width: 240%;
+      height: 200%;
+      background: linear-gradient(
+        115deg,
+        rgba(255,255,255,0.0) 0%,
+        rgba(255,255,255,0.3) 20%,
+        rgba(255,224,178,0.75) 40%,
+        rgba(255,255,255,0.3) 60%,
+        rgba(255,255,255,0.0) 100%
+      );
+      mix-blend-mode: screen;
+      opacity: 0;
+      pointer-events: none;
+      animation: superFoil 1.2s ease-out 0.2s 1 forwards;
     }
 
-    @keyframes cardPop {
-      0% { transform: translateY(10px) scale(0.95); opacity: 0; }
-      70% { transform: translateY(-2px) scale(1.03); opacity: 1; }
-      100% { transform: translateY(0) scale(1); opacity: 1; }
+    @keyframes superFoil {
+      0% {
+        opacity: 0;
+        transform: translateX(-40%);
+      }
+      35% {
+        opacity: 0.95;
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(40%);
+      }
     }
 
     .card-header {
@@ -277,41 +429,23 @@
       font-size: 0.72rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: #b20d30;
-      opacity: 0.95;
+      color: #e0f7ff;
+      opacity: 0.96;
       margin-bottom: 0.3rem;
     }
 
     .card.mini-game .card-label {
-      color: #6f1ad1;
+      color: #f3e5ff;
     }
 
     .card.super-modifier .card-label {
-      color: #b00020;
-    }
-
-    .card-title {
-      font-family: "Chewy", system-ui, sans-serif;
-      font-size: 1.4rem;
-      color: #b31317;
-      text-shadow: 0 2px 0 #ffe6b8;
-      padding: 0 0.4rem;
-    }
-
-    .card.mini-game .card-title {
-      color: #6f1ad1;
-      text-shadow: 0 2px 0 #f7e4ff;
-    }
-
-    .card.super-modifier .card-title {
-      color: #c00024;
-      text-shadow: 0 2px 0 #ffe0e0;
+      color: #ffccbc;
     }
 
     .card-divider {
       height: 4px;
       width: 70%;
-      background: linear-gradient(to right, #ffdc6e, #ff4b5c);
+      background: linear-gradient(to right, #4fd9ff, #0288d1);
       margin: 0.6rem auto 0.7rem;
       border-radius: 99px;
     }
@@ -321,7 +455,7 @@
     }
 
     .card.super-modifier .card-divider {
-      background: linear-gradient(to right, #ff8a80, #ff1744);
+      background: linear-gradient(to right, #ffca28, #ff7043);
     }
 
     .card-body {
@@ -334,20 +468,6 @@
       max-height: 60%;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-    }
-
-    .card-text {
-      font-size: 1.02rem;
-      color: #4b2220;
-      line-height: 1.45;
-    }
-
-    .card.mini-game .card-text {
-      color: #4b2050;
-    }
-
-    .card.super-modifier .card-text {
-      color: #4b1014;
     }
 
     .card-footer {
@@ -531,24 +651,22 @@
         return;
       }
 
-      // Start from a fully random shuffle.
       shuffleArray(source);
 
       const hasSpecial = source.some(isSpecialCard);
       const hasNormal = source.some(card => !isSpecialCard(card));
 
-      // If we don't have both types, just use the random shuffle as-is.
       if (!hasSpecial || !hasNormal) {
-        deck = [...source];
+        // No spacing rule possible; just use shuffled order.
+        deck = [...source].reverse();
         if (showMessage) updateStatus("Deck shuffled. Ready to draw.");
         else updateStatus();
         return;
       }
 
-      // 'order' is in draw order: index 0 will be the first drawn.
       let order = [...source];
 
-      // Rule 1: First drawn card should not be special if a normal exists.
+      // Rule 1: first drawn card shouldn't be special if a normal exists.
       if (isSpecialCard(order[0])) {
         const swapIndex = order.findIndex((c, idx) => idx > 0 && !isSpecialCard(c));
         if (swapIndex !== -1) {
@@ -556,7 +674,7 @@
         }
       }
 
-      // Rule 2: Avoid consecutive specials when possible.
+      // Rule 2: avoid consecutive specials when possible.
       for (let i = 1; i < order.length; i++) {
         if (isSpecialCard(order[i]) && isSpecialCard(order[i - 1])) {
           const swapIndex = order.findIndex((c, idx) => idx > i && !isSpecialCard(c));
@@ -566,7 +684,6 @@
         }
       }
 
-      // We draw with deck.pop(), so reverse so that order[0] is the last element.
       deck = order.slice().reverse();
 
       if (showMessage) updateStatus("Deck shuffled. Ready to draw.");
@@ -587,27 +704,37 @@
     let confettiParticles = [];
     let confettiAnimating = false;
 
-    function launchConfetti() {
-      const count = 80;
-      const colors = ["#ffcc00", "#ff6ec7", "#00f5d4", "#9b5bff", "#ff9a62", "#ffffff"];
+    function launchConfetti(kind) {
+      // kind: "miniGame" | "super"
+      const isMini = kind === "miniGame";
+      const isSuper = kind === "super";
+
+      if (!isMini && !isSuper) return; // no confetti for regulars
+
+      const baseCount = isMini ? 70 : 90;
+      const colors = isMini
+        ? ["#00f5d4", "#9b5bff", "#ff99e5", "#ffffff"]
+        : ["#ffca28", "#ff4081", "#40c4ff", "#ffffff"];
 
       confettiParticles = [];
-      for (let i = 0; i < count; i++) {
+      for (let i = 0; i < baseCount; i++) {
         confettiParticles.push({
           x: Math.random() * confettiCanvas.width,
           y: -10 - Math.random() * 40,
-          radius: 3 + Math.random() * 4,
+          radius: (isMini ? 2.5 : 3.5) + Math.random() * (isMini ? 2 : 3),
           color: colors[Math.floor(Math.random() * colors.length)],
           vx: -2 + Math.random() * 4,
-          vy: 2 + Math.random() * 3,
+          vy: 2 + Math.random() * 3.2,
           rotation: Math.random() * Math.PI * 2,
-          vr: -0.2 + Math.random() * 0.4
+          vr: -0.2 + Math.random() * 0.4,
+          square: !isMini && Math.random() < 0.35 // some chunkier squares for super
         });
       }
 
       if (!confettiAnimating) {
         confettiAnimating = true;
         const start = performance.now();
+        const duration = isMini ? 1400 : 1700;
 
         function frame(now) {
           const elapsed = now - start;
@@ -623,13 +750,20 @@
             confettiCtx.translate(p.x, p.y);
             confettiCtx.rotate(p.rotation);
             confettiCtx.fillStyle = p.color;
-            confettiCtx.beginPath();
-            confettiCtx.ellipse(0, 0, p.radius, p.radius * 0.6, 0, 0, Math.PI * 2);
-            confettiCtx.fill();
+
+            if (p.square) {
+              const size = p.radius * 1.4;
+              confettiCtx.fillRect(-size / 2, -size / 2, size, size);
+            } else {
+              confettiCtx.beginPath();
+              confettiCtx.ellipse(0, 0, p.radius, p.radius * 0.6, 0, 0, Math.PI * 2);
+              confettiCtx.fill();
+            }
+
             confettiCtx.restore();
           });
 
-          if (elapsed < 1500) {
+          if (elapsed < duration) {
             requestAnimationFrame(frame);
           } else {
             confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
@@ -642,10 +776,23 @@
     }
 
     function resetCardFace() {
-      cardEl.classList.remove("mini-game", "super-modifier", "chaos-glow");
+      cardEl.classList.remove("mini-game", "super-modifier");
       cardTypeLabel.textContent = "Shared Modifier";
       cardTitleEl.textContent = DEFAULT_TITLE;
       cardTextEl.textContent = DEFAULT_TEXT;
+    }
+
+    function resetCardTransform() {
+      if (!window.gsap) return;
+      gsap.set(cardEl, {
+        x: 0,
+        y: 0,
+        rotationX: 0,
+        rotationY: 0,
+        rotationZ: 0,
+        scale: 1,
+        opacity: 1
+      });
     }
 
     function animateShuffleAndReset() {
@@ -658,17 +805,17 @@
 
       const tl = gsap.timeline();
       tl.to(cardEl, {
-        x: -20,
+        x: -12,
         rotationZ: -3,
-        duration: 0.08,
+        duration: 0.06,
         ease: "sine.inOut"
       })
       .to(cardEl, {
-        x: 20,
+        x: 12,
         rotationZ: 3,
-        duration: 0.08,
+        duration: 0.06,
         ease: "sine.inOut",
-        repeat: 3,
+        repeat: 4,
         yoyo: true
       })
       .to(cardEl, {
@@ -681,13 +828,12 @@
     }
 
     function applyCardStylesAndText(card) {
-      cardEl.classList.remove("mini-game", "super-modifier", "chaos-glow");
+      cardEl.classList.remove("mini-game", "super-modifier");
 
-      const special = isSpecialCard(card);
       const isMiniGame = (card.type === "miniGame");
       const name = typeof card.name === "string" ? card.name : "";
-      const isSuper = name.startsWith("Super Modifier") ||
-        (Array.isArray(card.categories) && card.categories.includes("super"));
+      const cats = Array.isArray(card.categories) ? card.categories : [];
+      const isSuper = name.startsWith("Super Modifier") || cats.includes("super");
 
       if (isMiniGame) {
         cardEl.classList.add("mini-game");
@@ -705,35 +851,92 @@
 
       cardTitleEl.textContent = card.name || "(Unnamed card)";
       cardTextEl.textContent = card.text || "";
+    }
 
-      if (special) {
-        cardEl.classList.add("chaos-glow");
-        launchConfetti();
+    // === Animations ===
+
+    // specialType: null | "miniGame" | "super"
+    function animDropFromCameraCard(specialType) {
+      if (!window.gsap) return;
+
+      gsap.killTweensOf(cardEl);
+      resetCardTransform();
+
+      const tl = gsap.timeline();
+
+      // 1) DROP: from slightly "closer" and up, down to near-final spot
+      tl.fromTo(
+        cardEl,
+        {
+          scale: 1.16,
+          y: -30,
+          opacity: 0.0
+        },
+        {
+          scale: 1.02,
+          y: 4,
+          opacity: 1,
+          duration: 0.26,
+          ease: "power2.out"
+        }
+      );
+
+      // 2) SETTLE: bounce to final position
+      tl.to(cardEl, {
+        scale: 1,
+        y: 0,
+        duration: 0.14,
+        ease: "power1.out"
+      });
+
+      // 3) SPECIAL: wiggle + confetti timed together
+      if (specialType) {
+        // Trigger confetti right as the "special" phase begins
+        tl.add(() => launchConfetti(specialType));
+
+        if (specialType === "miniGame") {
+          // Cute, lighter wiggle
+          tl.to(cardEl, {
+            rotationZ: 2.0,
+            duration: 0.08,
+            yoyo: true,
+            repeat: 3,
+            ease: "sine.inOut"
+          })
+          .to(cardEl, {
+            rotationZ: 0,
+            duration: 0.12,
+            ease: "power1.out"
+          });
+        } else if (specialType === "super") {
+          // Stronger wiggle + tiny pulse
+          tl.to(cardEl, {
+            rotationZ: 3.0,
+            scale: 1.02,
+            duration: 0.08,
+            yoyo: true,
+            repeat: 4,
+            ease: "sine.inOut"
+          })
+          .to(cardEl, {
+            rotationZ: 0,
+            scale: 1,
+            duration: 0.12,
+            ease: "power1.out"
+          });
+        }
       }
     }
 
     function showCard(card) {
-      if (window.gsap) {
-        gsap.killTweensOf(cardEl);
-        // Drop-in animation: card falls from above onto the pile.
-        applyCardStylesAndText(card);
-        gsap.fromTo(
-          cardEl,
-          { y: -80, scale: 0.9, opacity: 0 },
-          {
-            y: 0,
-            scale: 1,
-            opacity: 1,
-            duration: 0.45,
-            ease: "bounce.out"
-          }
-        );
-      } else {
-        cardEl.classList.remove("draw-anim");
-        void cardEl.offsetWidth;
-        cardEl.classList.add("draw-anim");
-        applyCardStylesAndText(card);
+      applyCardStylesAndText(card);
+
+      let specialType = null;
+      if (isSpecialCard(card)) {
+        specialType = card.type === "miniGame" ? "miniGame" : "super";
       }
+
+      animDropFromCameraCard(specialType);
     }
 
     function parseCsv(text) {
@@ -861,4 +1064,19 @@
     loadCardsFromSheet();
   </script>
 </body>
+    <div class="status" id="status"></div>
+
+  <footer class="app-footer">
+    <p class="app-footer-line">
+      Mini Golf Mayhem is a fan-made tool and is not affiliated with or endorsed by Mighty Coconut, Walkabout Mini Golf, or any other game. Made with AI coding assistance.
+    </p>
+    <p class="app-footer-line">
+      Have feedback or an idea to share?
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfcNcxnaL6A8oWO0cXT9sW6OQjXGq4Ip4tGaeFTsb9-3m5ZRg/viewform?usp=dialog" target="_blank" rel="noopener">
+        Tell me about it here.
+      </a>
+    </p>
+  </footer>
+</body>
+</html>
 </html>
