@@ -113,6 +113,30 @@
       opacity: 0.95;
     }
 
+    .player-count-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .player-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.24rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(10, 8, 40, 0.9);
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    .player-pill input {
+      width: 14px;
+      height: 14px;
+    }
+
     .filter-grid {
       display: flex;
       flex-wrap: wrap;
@@ -137,8 +161,8 @@
     }
 
     .filters-note {
-      margin-top: 0.45rem;
-      font-size: 0.75rem; /* slightly larger */
+      margin-top: 0.55rem;
+      font-size: 0.75rem;
       opacity: 0.8;
     }
 
@@ -190,7 +214,6 @@
       perspective: 1200px;
     }
 
-    /* Base modifier card: light teal, dark text */
     .card {
       position: relative;
       width: min(320px, 92vw);
@@ -239,7 +262,10 @@
       line-height: 1.45;
     }
 
-    /* Mini game card styling: purple/pink with sparkles + shimmer */
+    .card-text p {
+      margin: 0.35rem 0;
+    }
+
     .card.mini-game {
       background:
         radial-gradient(circle at 0 0, #f3c5ff 0, transparent 55%),
@@ -317,7 +343,6 @@
       }
     }
 
-    /* Super modifier cards: orange/red + foil + burst */
     .card.super-modifier {
       background:
         radial-gradient(circle at 0 0, #ffe0bf 0, transparent 55%),
@@ -402,6 +427,19 @@
       }
     }
 
+    .card.intro {
+      background:
+        radial-gradient(circle at 0 0, #ffffff 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, #c5ffe5 0, transparent 55%),
+        #e0fff4;
+      border-color: #1abc9c;
+    }
+
+    .card.intro .card-title {
+      color: #0b6b5c;
+      text-shadow: 0 2px 0 #bdf7e6;
+    }
+
     .card-header {
       text-align: center;
     }
@@ -410,7 +448,7 @@
       font-size: 0.78rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #7ab9ff; /* readable light blue */
+      color: #7ab9ff;
       opacity: 0.96;
       margin-bottom: 0.3rem;
     }
@@ -421,6 +459,11 @@
 
     .card.super-modifier .card-label {
       color: #ffccbc;
+    }
+
+    .card-label.is-empty {
+      display: none;
+      margin-bottom: 0;
     }
 
     .card-divider {
@@ -458,7 +501,7 @@
 
     .status {
       margin-top: 0.7rem;
-      font-size: 0.84rem; /* slightly larger */
+      font-size: 0.84rem;
       opacity: 0.9;
       text-align: center;
       min-height: 1.3rem;
@@ -469,31 +512,6 @@
         font-size: 0.96rem;
       }
     }
-/* Intro "How to Play" card variant */
-.card.intro {
-  background:
-    radial-gradient(circle at 0 0, #ffffff 0, transparent 55%),
-    radial-gradient(circle at 100% 100%, #c5ffe5 0, transparent 55%),
-    #e0fff4;
-  border-color: #1abc9c;
-}
-
-/* Slightly different title color on intro card (optional) */
-.card.intro .card-title {
-  color: #0b6b5c;
-  text-shadow: 0 2px 0 #bdf7e6;
-}
-
-/* When the label is empty (intro card), hide it and tighten spacing */
-.card-label.is-empty {
-  display: none;
-  margin-bottom: 0;
-}
-
-/* Tighter spacing between paragraphs on the how-to card */
-.card-text p {
-  margin: 0.35rem 0;
-}
 
     #confettiCanvas {
       position: fixed;
@@ -534,39 +552,27 @@
   </div>
 
   <div class="filters-panel" id="filtersPanel">
-    <div class="filters-title">Filter by chaos type</div>
-    <div class="filter-grid">
-      <label class="filter-chip">
-        <input type="checkbox" name="categoryFilter" value="movement" checked>
-        <span>Movement / Stance</span>
+    <div class="filters-title">Player count</div>
+    <div class="player-count-row">
+      <label class="player-pill">
+        <input type="radio" name="playerCount" value="1" checked>
+        <span>1 player</span>
       </label>
-      <label class="filter-chip">
-        <input type="checkbox" name="categoryFilter" value="mechanics" checked>
-        <span>Shot Mechanics</span>
+      <label class="player-pill">
+        <input type="radio" name="playerCount" value="2">
+        <span>2 players</span>
       </label>
-      <label class="filter-chip">
-        <input type="checkbox" name="categoryFilter" value="voice" checked>
-        <span>Voice / Performance</span>
-      </label>
-      <label class="filter-chip">
-        <input type="checkbox" name="categoryFilter" value="social" checked>
-        <span>Social</span>
-      </label>
-      <label class="filter-chip">
-        <input type="checkbox" name="categoryFilter" value="puppet" checked>
-        <span>Puppets</span>
-      </label>
-      <label class="filter-chip">
-        <input type="checkbox" name="categoryFilter" value="mini-game" checked>
-        <span>Mini Games</span>
-      </label>
-      <label class="filter-chip">
-        <input type="checkbox" name="categoryFilter" value="super" checked>
-        <span>Super Modifiers</span>
+      <label class="player-pill">
+        <input type="radio" name="playerCount" value="3+">
+        <span>3+ players</span>
       </label>
     </div>
+
+    <div class="filters-title">Filter by chaos type</div>
+    <div class="filter-grid" id="chaosFilterGrid"></div>
+
     <div class="filters-note">
-      Unchecked categories are excluded from the deck. Shuffle resets the deck based on your current filter choices.
+      Unchecked tags are excluded from the deck. Use the player count to pick the version of each card that matches your group size.
     </div>
   </div>
 
@@ -576,16 +582,14 @@
   </div>
 
   <div class="card-area">
-    <div class="card" id="card">
+    <div class="card intro" id="card">
       <div class="card-header">
-        <div class="card-label" id="cardTypeLabel">Modifier</div>
+        <div class="card-label is-empty" id="cardTypeLabel"></div>
         <div class="card-title" id="cardTitle">How to Play</div>
         <div class="card-divider"></div>
       </div>
       <div class="card-body">
-        <div class="card-text" id="cardText">
-          <!-- Starter text will be injected by JS -->
-        </div>
+        <div class="card-text" id="cardText"></div>
       </div>
       <div class="card-footer"></div>
     </div>
@@ -595,7 +599,8 @@
   <div class="status" id="status"></div>
 
   <div class="app-footer">
-    Fan-made tool · <a
+    Fan-made tool ·
+    <a
       href="https://docs.google.com/forms/d/e/1FAIpQLSfcNcxnaL6A8oWO0cXT9sW6OQjXGq4Ip4tGaeFTsb9-3m5ZRg/viewform?usp=dialog"
       target="_blank"
       rel="noopener"
@@ -605,19 +610,25 @@
   </div>
 
   <script>
-    const SHEET_CSV_URL =
+    // Primary: Google Sheets CSV
+    const PRIMARY_CSV_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vSM17xNjd3IrbpPKTcPbImDp6eG4ZUGgVXj7QsJmZon4NzIvywm-IJ4rwMZ1eW1jNW--NHvQGWOtPzg/pub?gid=0&single=true&output=csv";
 
-const DEFAULT_TITLE = "How to Play";
-const DEFAULT_TEXT_HTML = `
-  <p><strong>At the start of each hole</strong>, tap the card or “Draw Card” to reveal a chaos modifier.</p>
-  <p>It applies to <strong>everyone’s first shot only</strong> on that hole, unless the card says otherwise.</p>
-  <p><strong>Mini Game</strong> and <strong>Super Modifier</strong> cards add extra rules. <strong>Mini Games award Immunity Tokens</strong>—spend one to ignore any single modifier later.</p>
-`;
+    // Fallback: GitHub CSV (raw)
+    const FALLBACK_CSV_URL =
+      "https://raw.githubusercontent.com/whimandwire/Mini-Golf-Mayhem/main/Cards.csv";
+
+    const DEFAULT_TITLE = "How to Play";
+    const DEFAULT_TEXT_HTML = `
+      <p><strong>At the start of each hole</strong>, tap the card or <strong>“Draw Card”</strong> to reveal a chaos modifier.</p>
+      <p>It applies to <strong>everyone’s first shot only</strong> on that hole, unless the card says otherwise.</p>
+      <p><strong>Mini Game</strong> and <strong>Super Modifier</strong> cards add extra rules. <strong>Mini Games award Immunity Tokens</strong>—spend one to ignore any single modifier later.</p>
+    `;
 
     let fullCards = [];
     let deck = [];
     let discardPile = [];
+    let selectedPlayerCount = "1";
 
     const cardEl = document.getElementById("card");
     const cardTypeLabel = document.getElementById("cardTypeLabel");
@@ -630,6 +641,7 @@ const DEFAULT_TEXT_HTML = `
     const filtersPanel = document.getElementById("filtersPanel");
     const confettiCanvas = document.getElementById("confettiCanvas");
     const confettiCtx = confettiCanvas.getContext("2d");
+    const chaosFilterGrid = document.getElementById("chaosFilterGrid");
 
     function resizeConfettiCanvas() {
       confettiCanvas.width = window.innerWidth;
@@ -646,7 +658,7 @@ const DEFAULT_TEXT_HTML = `
     }
 
     function getInactiveCategories() {
-      const inputs = document.querySelectorAll('input[name="categoryFilter"]');
+      const inputs = document.querySelectorAll('#chaosFilterGrid input[name="categoryFilter"]');
       const inactive = [];
       inputs.forEach(input => {
         if (!input.checked) inactive.push(input.value);
@@ -678,10 +690,25 @@ const DEFAULT_TEXT_HTML = `
       }
 
       const inactiveCats = getInactiveCategories();
-      let source = fullCards.filter(card =>
-        !inactiveCats.length ||
-        card.categories.every(cat => !inactiveCats.includes(cat))
-      );
+
+      let source = fullCards.filter(card => {
+        // Player count filter: if card lists any players,
+        // it must include the selected count. Empty = allowed for all.
+        if (Array.isArray(card.players) && card.players.length) {
+          if (!card.players.includes(selectedPlayerCount)) return false;
+        }
+
+        // Chaos-tag filters: if card has ANY inactive tag, exclude it.
+        const cats = Array.isArray(card.categories) ? card.categories : [];
+        if (
+          inactiveCats.length &&
+          cats.some(cat => inactiveCats.includes(cat))
+        ) {
+          return false;
+        }
+
+        return true;
+      });
 
       deck = [];
       discardPile = [];
@@ -706,7 +733,7 @@ const DEFAULT_TEXT_HTML = `
 
       let order = [...source];
 
-      // Rule 1: first drawn card shouldn't be special if a normal exists.
+      // First drawn card shouldn't be special if a normal exists.
       if (isSpecialCard(order[0])) {
         const swapIndex = order.findIndex((c, idx) => idx > 0 && !isSpecialCard(c));
         if (swapIndex !== -1) {
@@ -714,7 +741,7 @@ const DEFAULT_TEXT_HTML = `
         }
       }
 
-      // Rule 2: avoid consecutive specials when possible.
+      // Avoid consecutive specials when possible.
       for (let i = 1; i < order.length; i++) {
         if (isSpecialCard(order[i]) && isSpecialCard(order[i - 1])) {
           const swapIndex = order.findIndex((c, idx) => idx > i && !isSpecialCard(c));
@@ -814,16 +841,16 @@ const DEFAULT_TEXT_HTML = `
       }
     }
 
-function resetCardFace() {
-  cardEl.classList.remove("mini-game", "super-modifier");
-  cardEl.classList.add("intro");        // intro look
+    function resetCardFace() {
+      cardEl.classList.remove("mini-game", "super-modifier");
+      cardEl.classList.add("intro");
 
-  cardTypeLabel.textContent = "";
-  cardTypeLabel.classList.add("is-empty");
+      cardTypeLabel.textContent = "";
+      cardTypeLabel.classList.add("is-empty");
 
-  cardTitleEl.textContent = DEFAULT_TITLE;
-  cardTextEl.innerHTML = DEFAULT_TEXT_HTML;
-}
+      cardTitleEl.textContent = DEFAULT_TITLE;
+      cardTextEl.innerHTML = DEFAULT_TEXT_HTML;
+    }
 
     function resetCardTransform() {
       if (!window.gsap) return;
@@ -853,26 +880,26 @@ function resetCardFace() {
         duration: 0.06,
         ease: "sine.inOut"
       })
-        .to(cardEl, {
-          x: 12,
-          rotationZ: 3,
-          duration: 0.06,
-          ease: "sine.inOut",
-          repeat: 4,
-          yoyo: true
-        })
-        .to(cardEl, {
-          x: 0,
-          rotationZ: 0,
-          duration: 0.12,
-          ease: "power1.out",
-          onComplete: resetCardFace
-        });
+      .to(cardEl, {
+        x: 12,
+        rotationZ: 3,
+        duration: 0.06,
+        ease: "sine.inOut",
+        repeat: 4,
+        yoyo: true
+      })
+      .to(cardEl, {
+        x: 0,
+        rotationZ: 0,
+        duration: 0.12,
+        ease: "power1.out",
+        onComplete: resetCardFace
+      });
     }
 
-function applyCardStylesAndText(card) {
-  cardEl.classList.remove("mini-game", "super-modifier", "intro");
-  cardTypeLabel.classList.remove("is-empty");
+    function applyCardStylesAndText(card) {
+      cardEl.classList.remove("mini-game", "super-modifier", "intro");
+      cardTypeLabel.classList.remove("is-empty");
 
       const isMiniGame = card.type === "miniGame";
       const name = typeof card.name === "string" ? card.name : "";
@@ -893,12 +920,10 @@ function applyCardStylesAndText(card) {
         cardTypeLabel.textContent = "Modifier";
       }
 
-  cardTitleEl.textContent = card.name || "(Unnamed card)";
-  cardTextEl.innerHTML = card.text || "";
-
+      cardTitleEl.textContent = card.name || "(Unnamed card)";
+      cardTextEl.innerHTML = card.text || "";
     }
 
-    // specialType: null | "miniGame" | "super"
     function animDropFromCameraCard(specialType) {
       if (!window.gsap) return;
 
@@ -907,7 +932,6 @@ function applyCardStylesAndText(card) {
 
       const tl = gsap.timeline();
 
-      // Drop in
       tl.fromTo(
         cardEl,
         {
@@ -924,7 +948,6 @@ function applyCardStylesAndText(card) {
         }
       );
 
-      // Settle
       tl.to(cardEl, {
         scale: 1,
         y: 0,
@@ -1023,17 +1046,98 @@ function applyCardStylesAndText(card) {
       return rows;
     }
 
+    function niceCategoryLabel(tag) {
+      if (tag === "mini-game") return "Mini Games";
+      if (tag === "super") return "Super Modifiers";
+      // Basic title-case for others
+      return tag.replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    function buildCategoryFiltersFromCards(cards) {
+      if (!chaosFilterGrid) return;
+      chaosFilterGrid.innerHTML = "";
+
+      const catSet = new Set();
+
+      cards.forEach(card => {
+        if (!Array.isArray(card.categories)) return;
+        card.categories.forEach(tag => {
+          if (tag) catSet.add(tag);
+        });
+      });
+
+      const SPECIAL = ["mini-game", "super"];
+
+      const tags = Array.from(catSet).sort((a, b) => {
+        const ia = SPECIAL.indexOf(a);
+        const ib = SPECIAL.indexOf(b);
+        const aSpecial = ia !== -1;
+        const bSpecial = ib !== -1;
+
+        if (aSpecial && bSpecial) return ia - ib; // keep mini-game before super
+        if (aSpecial) return -1; // specials first
+        if (bSpecial) return 1;
+        return a.localeCompare(b);
+      });
+
+      tags.forEach(tag => {
+        const label = document.createElement("label");
+        label.className = "filter-chip";
+
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.name = "categoryFilter";
+        input.value = tag;
+        input.checked = true;
+
+        const span = document.createElement("span");
+        span.textContent = niceCategoryLabel(tag);
+
+        label.appendChild(input);
+        label.appendChild(span);
+        chaosFilterGrid.appendChild(label);
+
+        input.addEventListener("change", () => buildDeck(false));
+      });
+    }
+
+    async function fetchCsvOrThrow(url) {
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(`Network error for ${url}: ${res.status}`);
+      }
+      return res.text();
+    }
+
     async function loadCardsFromSheet() {
       statusEl.textContent = "Loading deck from sheet...";
       deck = [];
       discardPile = [];
+
+      let csvText = "";
+      let usedUrl = "";
+
       try {
-        const res = await fetch(SHEET_CSV_URL);
-        if (!res.ok) throw new Error("Network error");
-        const text = await res.text();
-        const rows = parseCsv(text);
+        // Try Google Sheets first
+        csvText = await fetchCsvOrThrow(PRIMARY_CSV_URL);
+        usedUrl = "Google Sheets";
+      } catch (errPrimary) {
+        console.warn("Primary sheet failed, trying fallback…", errPrimary);
+        try {
+          // Fallback to GitHub raw CSV
+          csvText = await fetchCsvOrThrow(FALLBACK_CSV_URL);
+          usedUrl = "GitHub fallback";
+        } catch (errFallback) {
+          console.error("Error loading sheet from both sources", errFallback);
+          statusEl.textContent = "Could not load deck from sheet or fallback CSV.";
+          return;
+        }
+      }
+
+      try {
+        const rows = parseCsv(csvText);
         if (!rows.length) {
-          statusEl.textContent = "No data found in sheet.";
+          statusEl.textContent = "No data found in CSV.";
           return;
         }
 
@@ -1042,6 +1146,7 @@ function applyCardStylesAndText(card) {
         const typeIdx = header.indexOf("type");
         const catIdx = header.indexOf("categories");
         const textIdx = header.indexOf("text");
+        const playersIdx = header.indexOf("players");
 
         const cards = [];
         for (let i = 1; i < rows.length; i++) {
@@ -1052,12 +1157,23 @@ function applyCardStylesAndText(card) {
           const rawType = (r[typeIdx] || "modifier").trim();
           const rawCats = (r[catIdx] || "").trim();
           const rawText = (r[textIdx] || "").trim();
+          const rawPlayers = playersIdx >= 0 ? (r[playersIdx] || "").trim() : "";
 
-          const type =
-            rawType.toLowerCase() === "minigame" ? "miniGame" : "modifier";
+          const typeKey = rawType.toLowerCase().replace(/[\s-]+/g, "");
+          const type = typeKey === "minigame" ? "miniGame" : "modifier";
 
-          let categories = rawCats
-            ? rawCats.split(/[;|]/).map(c => c.trim()).filter(Boolean)
+          const categories = rawCats
+            ? rawCats
+                .split(/[;,|]/)
+                .map(c => c.trim())
+                .filter(Boolean)
+            : [];
+
+          const players = rawPlayers
+            ? rawPlayers
+                .split(/[;,|]/)
+                .map(p => p.trim())
+                .filter(Boolean)
             : [];
 
           if (rawName.startsWith("Super Modifier") && !categories.includes("super")) {
@@ -1068,20 +1184,23 @@ function applyCardStylesAndText(card) {
             name: rawName,
             type,
             categories,
+            players,
             text: rawText
           });
         }
 
         fullCards = cards;
+        buildCategoryFiltersFromCards(cards);
         buildDeck(false);
         resetCardFace();
-        updateStatus("Deck loaded. Ready to draw.");
-      } catch (err) {
-        console.error("Error loading sheet", err);
-        statusEl.textContent = "Could not load deck from sheet.";
+        updateStatus(`${usedUrl} loaded. Ready to draw.`);
+      } catch (errParse) {
+        console.error("Error parsing CSV data", errParse);
+        statusEl.textContent = "CSV format error. Check header names and columns.";
       }
     }
 
+    // Event listeners
     drawButton.addEventListener("click", drawCard);
     shuffleButton.addEventListener("click", () => {
       buildDeck();
@@ -1094,14 +1213,18 @@ function applyCardStylesAndText(card) {
     });
 
     document
-      .querySelectorAll('input[name="categoryFilter"]')
+      .querySelectorAll('input[name="playerCount"]')
       .forEach(input => {
+        if (input.checked) {
+          selectedPlayerCount = input.value;
+        }
         input.addEventListener("change", () => {
+          selectedPlayerCount = input.value;
           buildDeck(false);
         });
       });
 
-    // Initialize default text and load data
+    // Initialize intro card + load deck
     resetCardFace();
     loadCardsFromSheet();
   </script>
